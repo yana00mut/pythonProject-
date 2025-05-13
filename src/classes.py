@@ -24,6 +24,7 @@ class Product:
         return cls(data["name"], data["description"], data["price"], data["quantity"])
 
 
+# Класс Категория (Category)
 class Category:
     total_categories = 0
     total_products = 0
@@ -38,7 +39,7 @@ class Category:
     def add_product(self, product):
         if isinstance(product, Product):
             self.__products.append(product)
-            Category.total_products += len(product)
+            Category.total_products += 1
         else:
             print("Можно добавлять только товары (Product)")
 
