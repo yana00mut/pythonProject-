@@ -23,8 +23,17 @@ class Product:
         """Класс-метод для создания продукта из словаря."""
         return cls(data["name"], data["description"], data["price"], data["quantity"])
 
+    def __str__(self):
+        """Строковое отображение продукта"""
+        return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
-# Класс Категория (Category)
+    def __add__(self, other):
+        """Складываем два товара по полной стоимости (цена * количество)"""
+        if isinstance(other, Product):
+            return self.price * self.quantity + other.price * other.quantity
+        return NotImplemented
+
+
 class Category:
     total_categories = 0
     total_products = 0
@@ -46,8 +55,4 @@ class Category:
     @property
     def products(self):
         """Геттер для получения списка товаров в читаемом виде."""
-        result = []
-        for p in self.__products:
-            line = f"{p.name}, {p.price} руб. Остаток: {p.quantity} шт."
-            result.append(line)
-        return result
+        return [str(p) for p in self.__products]

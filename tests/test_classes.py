@@ -33,3 +33,13 @@ def test_set_price_ok():
     p.price = 30.0
     assert p.price == 30.0
 
+def test_product_str():
+    p = Product("Линейка", "30 см", 15.0, 40)
+    assert str(p) == "Линейка, 15.0 руб. Остаток: 40 шт."
+
+
+def test_product_add():
+    a = Product("Товар A", "Описание A", 100, 10)  # 1000
+    b = Product("Товар B", "Описание B", 200, 2)   # 400
+    result = a + b
+    assert result == 1400
