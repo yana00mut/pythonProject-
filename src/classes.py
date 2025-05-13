@@ -29,10 +29,10 @@ class Category:
     total_categories = 0
     total_products = 0
 
-    def __init__(self, name, description):
+    def __init__(self, name, description, products):
         self.name = name
         self.description = description
-        self.__products = []
+        self.__products = products
 
         Category.total_categories += 1
 

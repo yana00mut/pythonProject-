@@ -34,4 +34,5 @@ def test_set_price_ok():
 def test_set_price_wrong(capsys):
     p = Product("Маркер", "Жёлтый", 15.0, 10)
     p.price = 0
-    out = capsys.read
+    captured = capsys.readouterr()
+    assert captured.out == "Цена не должна быть нулевая или отрицательная\n"
