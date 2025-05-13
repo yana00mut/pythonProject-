@@ -35,3 +35,19 @@ class Category:
         self.__products = products
 
         Category.total_categories += 1
+
+    def add_product(self, product):
+        if isinstance(product, Product):
+            self.__products.append(product)
+            Category.total_products += 1
+        else:
+            print("Можно добавлять только товары (Product)")
+
+    @property
+    def products(self):
+        """Геттер для получения списка товаров в читаемом виде."""
+        result = []
+        for p in self.__products:
+            line = f"{p.name}, {p.price} руб. Остаток: {p.quantity} шт."
+            result.append(line)
+        return result
