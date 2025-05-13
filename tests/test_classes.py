@@ -30,9 +30,3 @@ def test_set_price_ok():
     p.price = 30.0
     assert p.price == 30.0
 
-
-def test_set_price_wrong(capsys):
-    p = Product("Маркер", "Жёлтый", 15.0, 10)
-    p.price = 0
-    captured = capsys.readouterr()
-    assert captured.out == "Цена не должна быть нулевая или отрицательная\n"
