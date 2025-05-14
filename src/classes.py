@@ -28,12 +28,6 @@ class Product:
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        """Складываем два товара по полной стоимости (цена * количество)."""
-        if not isinstance(other, Product):
-            return NotImplemented
-        if type(self) != type(other):
-            raise TypeError("Нельзя складывать товары разных типов.")
-        return self.price * self.quantity + other.price * other.quantity
 
 
 class Category:
@@ -61,30 +55,3 @@ class Category:
         return [str(p) for p in self.__products]
 
     def __str__(self):
-        product_list = "\n".join(self.products)
-        return f"Категория: {self.name}\nОписание: {self.description}\nТовары:\n{product_list}"
-
-
-class Smartphone(Product):
-    def __init__(self, name, description, price, quantity, efficiency, model, memory, color):
-        super().__init__(name, description, price, quantity)
-        self.efficiency = efficiency
-        self.model = model
-        self.memory = memory
-        self.color = color
-
-    def __str__(self):
-        base = super().__str__()
-        return f"{base} | Модель: {self.model}, Память: {self.memory}, Цвет: {self.color}, Производительность: {self.efficiency}"
-
-
-class LawnGrass(Product):
-    def __init__(self, name, description, price, quantity, country, germination_period, color):
-        super().__init__(name, description, price, quantity)
-        self.country = country
-        self.germination_period = germination_period
-        self.color = color
-
-    def __str__(self):
-        base = super().__str__()
-        return f"{base} | Страна: {self.country}, Срок прорастания: {self.germination_period}, Цвет: {self.color}"
