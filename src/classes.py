@@ -56,3 +56,8 @@ class Category:
     def products(self):
         """Геттер для получения списка товаров в читаемом виде."""
         return [str(p) for p in self.__products]
+
+    def __str__(self):
+        """Строковое отображение категории"""
+        product_list = "\n".join(self.products)
+        return f"Категория: {self.name}\nОписание: {self.description}\nТовары:\n{product_list}"
