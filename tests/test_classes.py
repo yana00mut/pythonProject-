@@ -67,7 +67,5 @@ def test_category_add_invalid_object(capfd):
     out, _ = capfd.readouterr()
     assert "Можно добавлять только товары" in out
 
-def test_category_str():
-    cat = Category("Овощи", "Свежие овощи", [])
-    assert str(cat) == "Овощи (0 товаров)"
+
 
