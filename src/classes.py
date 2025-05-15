@@ -91,6 +91,3 @@ class LawnGrass(Product):
         self.germination_period = germination_period
         self.color = color
 
-    def __str__(self):
-        base = super().__str__()
-        return f"{base} | Страна: {self.country}, Срок прорастания: {self.germination_period}, Цвет: {self.color}"
