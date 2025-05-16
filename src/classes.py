@@ -30,6 +30,8 @@ class Product:
     def __add__(self, other):
 
 
+
+# Класс Категория (Category)
 class Category:
     total_categories = 0
     total_products = 0
@@ -38,7 +40,6 @@ class Category:
         self.name = name
         self.description = description
         self.__products = products
-
         Category.total_categories += 1
 
     def add_product(self, product):
@@ -52,6 +53,11 @@ class Category:
     @property
     def products(self):
         """Геттер для получения списка товаров в читаемом виде."""
+        result = []
+        for p in self.__products:
+            line = f"{p.name}, {p.price} руб. Остаток: {p.quantity} шт."
+            result.append(line)
+        return result
         return [str(p) for p in self.__products]
 
     def __str__(self):
