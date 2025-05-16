@@ -14,11 +14,13 @@ def category(products):
     cat = Category("Канцелярия", "Школьные товары", products)
     return cat
 
+
 def test_category_init(category):
     assert category.name == "Канцелярия"
     assert category.description == "Школьные товары"
     assert Category.total_categories == 1
     assert Category.total_products == 2
+
 
 def test_create_product():
     p = Product("Карандаш", "Простой", 5.0, 80)
