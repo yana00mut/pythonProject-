@@ -30,15 +30,36 @@ def test_create_product():
     assert p.quantity == 80
 
 
+def test_new_product_method():
+    data = {"name": "Скрепки", "description": "Металлические", "price": 3.5, "quantity": 100}
+    p = Product.new_product(data)
+    assert isinstance(p, Product)
+    assert p.name == "Скрепки"
+
+
 def test_set_price_ok():
     p = Product("Фломастер", "Красный", 20.0, 30)
     p.price = 30.0
     assert p.price == 30.0
 
 
+def test_set_price_invalid(capfd):
+    p = Product("Маркер", "Зеленый", 15.0, 10)
+    p.price = -10
+    out, _ = capfd.readouterr()
+    assert "Цена не должна быть нулевая или отрицательная" in out
+    assert p.price == 15.0  # цена не изменилась
+
+
 def test_product_str():
     p = Product("Ластик", "Белый", 5.0, 10)
     assert str(p) == "Ластик, 5.0 руб. Остаток: 10 шт."
+
+
+def test_product_add_not_product():
+    p = Product("Товар", "Описание", 100, 2)
+    result = p.__add__("не продукт")
+    assert result is NotImplemented
 
 
 def test_add_products_same_class():
@@ -69,8 +90,9 @@ def test_category_add_invalid_object(capfd):
 
 
 def test_category_str():
-    cat = Category("Овощи", "Свежие овощи", [])
-    assert str(cat) == "Овощи (0 товаров)"
+    cat = Category("Фрукты", "Свежие фрукты", [])
+    expected = "Категория: Фрукты\nОписание: Свежие фрукты\nТовары:\n"
+    assert str(cat) == expected
 
 
 def test_init_logger_mixin_output(capfd):
