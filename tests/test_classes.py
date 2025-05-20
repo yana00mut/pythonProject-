@@ -58,7 +58,7 @@ def test_product_str():
 
 def test_product_add_not_product():
     p = Product("Товар", "Описание", 100, 2)
-    result = p.__add__("не продукт")
+    result = p.add("не продукт")
     assert result is NotImplemented
 
 
@@ -89,13 +89,55 @@ def test_category_add_invalid_object(capfd):
     assert "Можно добавлять только товары" in out
 
 
+def test_add_products_different_classes_raises():
+    s = Smartphone("iPhone", "Apple", 80000, 1, "высокая", "13 Pro", "128GB", "черный")
+    g = LawnGrass("Газон", "Для дачи", 1000, 5, "Нидерланды", "7 дней", "зеленый")
+    with pytest.raises(TypeError):
+        _ = s + g
+
+
+def test_category_add_valid_product():
+    cat = Category("Техника", "Электроника", [])
+    s = Smartphone("Samsung", "Galaxy", 50000, 2, "высокая", "S21", "256GB", "серый")
+    cat.add_product(s)
+    assert str(s) in cat.products
+
+
+def test_category_add_invalid_object(capfd):
+    cat = Category("Разное", "Товары", [])
+    cat.add_product("Не продукт")
+    out, _ = capfd.readouterr()
+    assert "Можно добавлять только товары" in out
+
+
 def test_category_str():
+    cat = Category("Овощи", "Свежие овощи", [])
+    assert str(cat) == "Овощи (0 товаров)"
     cat = Category("Фрукты", "Свежие фрукты", [])
     expected = "Категория: Фрукты\nОписание: Свежие фрукты\nТовары:\n"
     assert str(cat) == expected
 
 
 def test_init_logger_mixin_output(capfd):
+    _ = Product("Продукт1", "Описание", 1200, 10)
+    out, _ = capfd.readouterr()
+    assert "Создан объект класса Product" in out
+    assert "Продукт1" in out
+    assert "1200" in out
+
+
+def test_init_logger_smartphone_output(capfd):
+    _ = Smartphone("iPhone", "Apple", 80000, 1, "высокая", "13 Pro", "128GB", "черный")
+    out, _ = capfd.readouterr()
+    assert "Создан объект класса Smartphone" in out
+    assert "iPhone" in out
+
+
+def test_init_logger_lawngrass_output(capfd):
+    _ = LawnGrass("Газон", "Для дачи", 1000, 5, "Нидерланды", "7 дней", "зеленый")
+    out, _ = capfd.readouterr()
+    assert "Создан объект класса LawnGrass" in out
+    assert "Газон" in out
     _ = Product("Продукт1", "Описание", 1200, 10)
     out, _ = capfd.readouterr()
     assert "Создан объект класса Product" in out
