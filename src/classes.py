@@ -41,10 +41,9 @@ class Product(InitLoggerMixin, BaseProduct):
     def __init__(self, name, description, price, quantity):
         self.name = name
         self.description = description
-        self.__price = None
-        self.price = price  # через setter
+        self.price = price
         self.quantity = quantity
-        super().__init__()
+        super().__init__(name, description, price, quantity)
 
     @property
     def price(self):
