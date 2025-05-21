@@ -79,27 +79,6 @@ def test_category_add_valid_product():
     cat = Category("Техника", "Электроника", [])
     s = Smartphone("Samsung", "Galaxy", 50000, 2, "высокая", "S21", "256GB", "серый")
     cat.add_product(s)
-    assert str(s) in cat.products
-
-
-def test_category_add_invalid_object(capfd):
-    cat = Category("Разное", "Товары", [])
-    cat.add_product("Не продукт")
-    out, _ = capfd.readouterr()
-    assert "Можно добавлять только товары" in out
-
-
-def test_add_products_different_classes_raises():
-    s = Smartphone("iPhone", "Apple", 80000, 1, "высокая", "13 Pro", "128GB", "черный")
-    g = LawnGrass("Газон", "Для дачи", 1000, 5, "Нидерланды", "7 дней", "зеленый")
-    with pytest.raises(TypeError):
-        _ = s + g
-
-
-def test_category_add_valid_product():
-    cat = Category("Техника", "Электроника", [])
-    s = Smartphone("Samsung", "Galaxy", 50000, 2, "высокая", "S21", "256GB", "серый")
-    cat.add_product(s)
     assert str(s) in [str(p) for p in cat._Category__products]
 
 
@@ -131,7 +110,7 @@ def test_init_logger_smartphone_output(capfd):
     assert "iPhone" in out
 
 
-def test_init_logger_lawngrass_output(capfd):
+def test_init_logger_lawngrass_output_1(capfd):
     _ = LawnGrass("Газон", "Для дачи", 1000, 5, "Нидерланды", "7 дней", "зеленый")
     out, _ = capfd.readouterr()
     assert "Создан объект класса LawnGrass" in out
@@ -150,7 +129,7 @@ def test_init_logger_smartphone_output(capfd):
     assert "iPhone" in out
 
 
-def test_init_logger_lawngrass_output(capfd):
+def test_init_logger_lawngrass_output_2(capfd):
     _ = LawnGrass("Газон", "Для дачи", 1000, 5, "Нидерланды", "7 дней", "зеленый")
     out, _ = capfd.readouterr()
     assert "Создан объект класса LawnGrass" in out
