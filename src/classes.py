@@ -10,6 +10,7 @@ class InitLoggerMixin:
 
 class BaseProduct(ABC):
     @abstractmethod
+
     def __init__(self, name, description, price, quantity):
         pass
 
@@ -47,6 +48,7 @@ class Product(InitLoggerMixin, BaseProduct):
         self.__price = None
         self.price = price  # через setter
         self.quantity = quantity
+        super().__init__(name, description, price, quantity)
 
         super().__init__()
         super().__init__(name, description, price, quantity)
@@ -129,14 +131,6 @@ class Category:
             line = f"{p.name}, {p.price} руб. Остаток: {p.quantity} шт."
             result.append(line)
         return result
-
-    def average_price(self):
-        try:
-            total_price = sum(p.price for p in self.__products)
-            count = len(self.__products)
-            return total_price / count
-        except ZeroDivisionError:
-            return 0
 
     def __str__(self):
         product_list = "\n".join(self.products)

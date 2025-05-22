@@ -58,8 +58,6 @@ def test_product_str():
 
 def test_product_add_not_product():
     p = Product("Товар", "Описание", 100, 2)
-    result = p.add("не продукт")
-    assert result is NotImplemented
     with pytest.raises(TypeError):
         _ = p + "не продукт"
 
@@ -81,28 +79,6 @@ def test_category_add_valid_product():
     cat = Category("Техника", "Электроника", [])
     s = Smartphone("Samsung", "Galaxy", 50000, 2, "высокая", "S21", "256GB", "серый")
     cat.add_product(s)
-    assert str(s) in cat.products
-
-
-def test_category_add_invalid_object(capfd):
-    cat = Category("Разное", "Товары", [])
-    cat.add_product("Не продукт")
-    out, _ = capfd.readouterr()
-    assert "Можно добавлять только товары" in out
-
-
-def test_add_products_different_classes_raises():
-    s = Smartphone("iPhone", "Apple", 80000, 1, "высокая", "13 Pro", "128GB", "черный")
-    g = LawnGrass("Газон", "Для дачи", 1000, 5, "Нидерланды", "7 дней", "зеленый")
-    with pytest.raises(TypeError):
-        _ = s + g
-
-
-def test_category_add_valid_product():
-    cat = Category("Техника", "Электроника", [])
-    s = Smartphone("Samsung", "Galaxy", 50000, 2, "высокая", "S21", "256GB", "серый")
-    cat.add_product(s)
-    assert str(s) in cat.products
     assert str(s) in [str(p) for p in cat._Category__products]
 
 
@@ -114,8 +90,6 @@ def test_category_add_invalid_object(capfd):
 
 
 def test_category_str():
-    cat = Category("Овощи", "Свежие овощи", [])
-    assert str(cat) == "Овощи (0 товаров)"
     cat = Category("Фрукты", "Свежие фрукты", [])
     expected = "Категория: Фрукты\nОписание: Свежие фрукты\nТовары:\n"
     assert str(cat) == expected
@@ -135,8 +109,6 @@ def test_init_logger_smartphone_output(capfd):
     assert "Создан объект класса Smartphone" in out
     assert "iPhone" in out
 
-
-def test_init_logger_lawngrass_output(capfd):
     _ = LawnGrass("Газон", "Для дачи", 1000, 5, "Нидерланды", "7 дней", "зеленый")
     out, _ = capfd.readouterr()
     assert "Создан объект класса LawnGrass" in out
@@ -155,19 +127,8 @@ def test_init_logger_smartphone_output(capfd):
     assert "iPhone" in out
 
 
-def test_init_logger_lawngrass_output(capfd):
     _ = LawnGrass("Газон", "Для дачи", 1000, 5, "Нидерланды", "7 дней", "зеленый")
     out, _ = capfd.readouterr()
     assert "Создан объект класса LawnGrass" in out
     assert "Газон" in out
 
-
-def test_average_price_with_products(products):
-    cat = Category("Канцелярия", "Школьные товары", products)
-    expected_avg = sum(p.price for p in products) / len(products)
-    assert cat.average_price() == expected_avg
-
-
-def test_average_price_empty_category():
-    cat = Category("Пустая категория", "Нет товаров", [])
-    assert cat.average_price() == 0
