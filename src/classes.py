@@ -39,12 +39,16 @@ class BaseProduct(ABC):
 
 class Product(InitLoggerMixin, BaseProduct):
     def __init__(self, name, description, price, quantity):
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
+
         self.name = name
         self.description = description
         self.__price = None
         self.price = price  # через setter
         self.quantity = quantity
 
+        super().__init__()
         super().__init__(name, description, price, quantity)
 
     @property
@@ -71,9 +75,6 @@ class Product(InitLoggerMixin, BaseProduct):
         if type(self) != type(other):
             raise TypeError("Нельзя складывать товары разных типов.")
         return self.price * self.quantity + other.price * other.quantity
-
-    def add(self, other):
-        return NotImplemented
 
 
 class Smartphone(Product):
@@ -125,17 +126,18 @@ class Category:
     def products(self):
         result = []
         for p in self.__products:
-            result.append(str(p))
+            line = f"{p.name}, {p.price} руб. Остаток: {p.quantity} шт."
+            result.append(line)
         return result
 
     def average_price(self):
         try:
-            total_price = sum(product.price for product in self.__products)
+            total_price = sum(p.price for p in self.__products)
             count = len(self.__products)
             return total_price / count
         except ZeroDivisionError:
             return 0
 
     def __str__(self):
-        product_lines = '\n'.join(str(p) for p in self.__products)
-        return f"Категория: {self.name}\nОписание: {self.description}\nТовары:\n{product_lines}"
+        product_list = "\n".join(self.products)
+        return f"Категория: {self.name}\nОписание: {self.description}\nТовары:\n{product_list}"
