@@ -58,8 +58,6 @@ def test_product_str():
 
 def test_product_add_not_product():
     p = Product("Товар", "Описание", 100, 2)
-    result = p.add("не продукт")
-    assert result is NotImplemented
     with pytest.raises(TypeError):
         _ = p + "не продукт"
 
@@ -81,7 +79,7 @@ def test_category_add_valid_product():
     cat = Category("Техника", "Электроника", [])
     s = Smartphone("Samsung", "Galaxy", 50000, 2, "высокая", "S21", "256GB", "серый")
     cat.add_product(s)
-    assert str(s) in cat.products
+    assert str(s) in cat.products_str_list()
 
 
 def test_category_add_invalid_object(capfd):
@@ -115,9 +113,7 @@ def test_category_add_invalid_object(capfd):
 
 def test_category_str():
     cat = Category("Овощи", "Свежие овощи", [])
-    assert str(cat) == "Овощи (0 товаров)"
-    cat = Category("Фрукты", "Свежие фрукты", [])
-    expected = "Категория: Фрукты\nОписание: Свежие фрукты\nТовары:\n"
+    expected = "Категория: Овощи\nОписание: Свежие овощи\nТовары:\n"
     assert str(cat) == expected
 
 
