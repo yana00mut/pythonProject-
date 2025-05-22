@@ -115,10 +115,12 @@ def test_category_add_invalid_object(capfd):
 
 def test_category_str():
     cat = Category("Овощи", "Свежие овощи", [])
-    assert str(cat) == "Овощи (0 товаров)"
+    expected_1 = "Категория: Овощи\nОписание: Свежие овощи\nТовары:\n"
+    assert str(cat) == expected_1
+
     cat = Category("Фрукты", "Свежие фрукты", [])
-    expected = "Категория: Фрукты\nОписание: Свежие фрукты\nТовары:\n"
-    assert str(cat) == expected
+    expected_2 = "Категория: Фрукты\nОписание: Свежие фрукты\nТовары:\n"
+    assert str(cat) == expected_2
 
 
 def test_init_logger_mixin_output(capfd):
