@@ -39,10 +39,15 @@ class BaseProduct(ABC):
 
 class Product(InitLoggerMixin, BaseProduct):
     def __init__(self, name, description, price, quantity):
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
+
         self.name = name
         self.description = description
-        self.__price = price
+        self.__price = None
+        self.price = price  # через setter
         self.quantity = quantity
+
         super().__init__(name, description, price, quantity)
 
     @property
@@ -65,10 +70,13 @@ class Product(InitLoggerMixin, BaseProduct):
 
     def __add__(self, other):
         if not isinstance(other, Product):
-            return NotImplemented
+            raise TypeError("Можно складывать только экземпляры Product или его подклассов.")
         if type(self) != type(other):
             raise TypeError("Нельзя складывать товары разных типов.")
         return self.price * self.quantity + other.price * other.quantity
+
+    def add(self, other):
+        return self + other
 
 
 class Smartphone(Product):
@@ -81,7 +89,8 @@ class Smartphone(Product):
 
     def __str__(self):
         base = super().__str__()
-        return f"{base} | Модель: {self.model}, Память: {self.memory}, Цвет: {self.color}, Производительность: {self.efficiency}"
+        extra = f" | Модель: {self.model}, Память: {self.memory}, Цвет: {self.color}, Производительность: {self.efficiency}"
+        return base + extra
 
 
 class LawnGrass(Product):
@@ -118,12 +127,19 @@ class Category:
 
     @property
     def products(self):
-        result = []
-        for p in self.__products:
-            line = f"{p.name}, {p.price} руб. Остаток: {p.quantity} шт."
-            result.append(line)
-        return result
+        return [str(p) for p in self.__products]
+
+    def average_price(self):
+        try:
+            total_price = sum(p.price for p in self.__products)
+            count = len(self.__products)
+            return total_price / count
+        except ZeroDivisionError:
+            return 0
 
     def __str__(self):
-        product_list = "\n".join(self.products)
-        return f"Категория: {self.name}\nОписание: {self.description}\nТовары:\n{product_list}"
+        if not self.__products:
+            product_lines = ""
+        else:
+            product_lines = '\n'.join(str(p) for p in self.__products)
+        return f"Категория: {self.name}\nОписание: {self.description}\nТовары:\n{product_lines}"
